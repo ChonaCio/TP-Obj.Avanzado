@@ -120,6 +120,9 @@ def put_compras(current_user):
 	totalCost = 0
 	for row in data['cart']:
 		prd = Product.query.filter_by(id=row['id_product']).first()
+		if prd is None:
+			# Corte si no encuentra producto
+			return jsonify({'code': 404, 'message': 'Item not found'})
 		totalCost += prd.cash * row['stock']
 
 	if usrProfile.cash >= totalCost:
